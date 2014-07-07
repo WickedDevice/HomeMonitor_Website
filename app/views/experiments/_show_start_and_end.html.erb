@@ -1,0 +1,28 @@
+<% if @experiment.start.nil? %>
+  	<div>
+  		<%= render 'form_start' %>
+<% elsif @experiment.end.nil? %>
+  <p>
+    <strong>Start:</strong>
+    <%= @experiment.start.in_time_zone.to_s(:custom) %>
+  </p>
+  <p>
+  	<div>
+  		<%= render 'form_end' %>
+  	</div>
+
+<% else %>
+  <p>
+    <strong>Start:</strong>
+    <%= @experiment.start.in_time_zone.to_s(:custom) %>
+  </p>
+  <p>
+    <strong>End:</strong>
+  	<%= @experiment.end.in_time_zone.to_s(:custom) %>
+  </p>
+  <p>
+    <div>
+      <%= render 'form_reopen' %>
+    </div>
+  </p>
+<% end %>

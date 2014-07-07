@@ -1,0 +1,42 @@
+<%# Expects device and experiment_id to be defined%>
+<%    
+    disabled = false
+    if device.experiment_id == experiment_id
+      label = "Deactivate"
+      value = nil
+      form_html = "return confirm('Are you sure you want to deactivate this device?');"
+    else
+      label = "Activate"
+      value = @experiment.id
+      form_html = ""
+
+      if device.in_experiment?
+        label = "Unavailable"
+        disabled = true
+      end
+    end
+
+    %>
+
+<%= form_for(device, html: { :onsubmit => form_html }) do |f| %>
+ <% if device.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(device.errors.count, "error") %> prohibited this device from being saved:</h2>
+
+      <ul>
+      <% device.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+    <%= f.hidden_field :redirect_to, :value => '/experiments/' + experiment_id.to_s %>
+    <%= f.hidden_field :experiment_id, :value => value%>
+  </div>
+
+  <div class="actions" style="margin:0">
+    <%= f.submit label, disabled: disabled %>
+  </div>
+
+<% end %>

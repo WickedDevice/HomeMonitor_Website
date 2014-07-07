@@ -1,0 +1,44 @@
+<%# Expects to be handed a back_links variable, and a submit_name %>
+<%= form_for(@device, html: {:class => "centered center-block"}) do |f| %>
+  <% if @device.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@device.errors.count, "error") %> prohibited this sensor from being saved:</h2>
+
+      <ul>
+      <% @device.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :address, "MAC address" %><br>
+    <% if @device.created_at.nil? || (current_user.admin?) %>
+    <%= f.text_field :address %>
+    <% else %>
+    <%= @device.address %>
+     <% end %>
+  </div>
+ 
+  <% if current_user.admin? %>
+  <div class="field">
+    <%= f.label :encryption_key %>
+    <%= f.text_field :encryption_key, placeholder: "≤ 31 characters, no tabs, no spaces", value: @device.encryption_key || SecureRandom.base64(32)[0..30] %>
+  </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :notes %><br>
+    <%= f.text_area :notes %>
+  </div>
+  <div class="actions">
+    <%= back_links %>
+    <%= f.submit submit_name%><%# #submit_name wouldn't be necessary if devices weren't called sensors %>
+  </div>
+<% end %>

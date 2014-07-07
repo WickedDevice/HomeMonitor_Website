@@ -1,0 +1,163 @@
+// Place all the styles related to the pages controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+/* pages/home page */
+$height:     300px; /* Height of the background image section. */
+$dark-color: #000044;
+
+.pages .hero {
+	width:100%;
+	height:$height;
+    background-image: image-url("welcome_background.jpg");
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+
+    .text-on-image {
+    	height:$height;
+    	color:#000000;
+    	background:rgba(255,255,255,0.7);
+    	background-size: cover;
+
+    	padding:2em;
+    	margin-bottom:0px;
+
+    	
+    	h3{
+    		font-weight: bold;
+    		color: $dark-color;
+    		font-size:1.6em;
+    		text-align:center;
+			position: relative;
+			top: 50%;
+			transform: translateY(-50%);
+		}	
+    }
+
+    .glyphicon-column{
+    	height:$height;
+
+    	padding:1px;
+    	div {
+
+    			position: absolute;
+    			bottom: 0;
+    			width:100%;
+	    		
+
+	    		.glyphicon-camera {
+	    			color:rgba(255,255,255,0.8);
+	    			padding:10px;
+	    			position: relative;
+	    			float:right;
+	    			text-align: right;
+	    		}
+    	}
+
+	}
+}
+
+.home-container {
+	width:100%;
+	margin:none;
+	padding:10px 0 0 0;
+}
+
+/* Recolored header */
+$color-primary:			#78c26b; /* mid-green  -- primary navbar color*/
+$color-secondary:  		#389c47; /* 'dark' green -- navbar selected */
+$color-tertiary:   		#f8ffff; /* Very light color -- light text */
+$color-quartenary: 		#9cfed4; /* Cyan		-- navbar selected text */
+
+/* Controls column & table backgrounds*/
+$color-very-pale:		#fcfcfc;
+$color-pale:			#f8f8f8;
+
+.white-nav {
+	.navbar-inner{
+	    text-align:center;
+	}
+
+	$bgDefault      : $color-pale;
+	$bgHighlight    : $color-very-pale;
+	$colDefault     : $dark-color;
+	$colHighlight   : $color-secondary;
+	.navbar-custom {
+
+		background-color: $bgDefault;
+		border-color: $bgHighlight;
+		.navbar-brand {
+			color: $colDefault;
+			&:hover, &:focus { 
+				color: $colHighlight; }}
+		.navbar-text {
+			color: $colDefault; }
+		.navbar-nav {
+			> li {
+				> a {
+					color: $colDefault;
+					&:hover,  &:focus {
+						background-color: $bgHighlight;
+						color: $colHighlight; }}}
+			> .active {
+				> a, > a:hover, > a:focus {
+					color: $colHighlight;
+					background-color: $bgHighlight; }}
+			> .open {
+				> a, > a:hover, > a:focus {
+					color: $colHighlight;
+					background-color: $bgHighlight; }}}
+		.navbar-toggle {
+			border-color: $bgHighlight;
+			&:hover, &:focus {
+				background-color: $bgHighlight; }
+			.icon-bar {
+				background-color: $colDefault; }}
+		.navbar-collapse,
+		.navbar-form {
+			border-color: $colDefault; }
+		.navbar-link {
+			color: $colDefault;
+			&:hover {
+				color: $colHighlight; }}}
+	@media (max-width: 767px) {
+		.navbar-inner {
+			text-align:left;
+		}
+		.navbar-custom .navbar-nav .open .dropdown-menu {
+			> li > a {
+				color: $colDefault;
+				&:hover, &:focus {
+					color: $colHighlight; }}
+			> .active {
+				> a, > a:hover, > a:focus, {
+					color: $colHighlight;
+					background-color: $bgHighlight; }}}
+	}
+
+
+	#logo {
+		img {
+		}
+		a {
+			color: $colDefault;
+			&:hover {
+				color: $colHighlight;
+			}
+		}
+
+	}
+
+	.llc {
+		font-size:50%;
+	}
+
+	.title {
+		text-transform:none;
+		font-weight:bold;
+		color: $colDefault;
+		font-size:1.5em;
+	}
+}
