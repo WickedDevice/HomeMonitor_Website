@@ -1,36 +1,36 @@
 class Device < ActiveRecord::Base
 	validates :encryption_key, presence: true
-	validates :experiment_id, numericality: { only_integer: true, allow_nil: true }
+	validates :building_id, numericality: { only_integer: true, allow_nil: true }
 	validates :address, uniqueness: true
 	validates :name, presence: true
 
 	#validates :user_id, numericality: { only_integer: true }
-	belongs_to :experiment # This is the active experiment
+	belongs_to :building # This is the active building
 	belongs_to :user
-	has_many :device_experiments
-	has_many :experiments, :through => :device_experiments
+	has_many :device_buildings
+	has_many :buildings, :through => :device_buildings
 
-	def in_experiment?
-		if self.experiment #not nil
-			return self.experiment.active?
+	def in_building?
+		if self.building #not nil
+			return self.building.active?
 		else
 			return false
 		end
 	end
 
-	def checkout to_experiment_id
-		if self.in_experiment? && (self.experiment_id != to_experiment_id)
-			throw "Device #{id} in experiment"
+	def checkout to_building_id
+		if self.in_building? && (self.building_id != to_building_id)
+			throw "Device #{id} in building"
 		end
-		self.experiment_id = to_experiment_id
+		self.building_id = to_building_id
 		throw "Couldn't save device #{id}" if not self.save
 	end
 
-	def checkin experiment_id
-		if experiment_id != self.experiment_id
+	def checkin building_id
+		if building_id != self.building_id
 			return true
 		else
-			self.experiment_id = nil
+			self.building_id = nil
 			return self.save
 		end
 	end
@@ -39,8 +39,8 @@ class Device < ActiveRecord::Base
 	alias_method :super_update, :update
 	private :super_update
 	def update(params)
-		#Fail if it would change mid-experiment
-		if in_experiment? && !params[experiment].nil? && params[experiment] != self.experiment_id
+		#Fail if it would change mid-building
+		if in_building? && !params[building].nil? && params[building] != self.building_id
 			return false
 		end
 		super_update(params)

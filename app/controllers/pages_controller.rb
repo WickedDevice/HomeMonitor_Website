@@ -5,6 +5,7 @@ class PagesController < ApplicationController
   skip_before_action :logged_out_redirect #Causes infinite loop if not disabled
 
   before_action :set_page, only: [:show, :edit, :update, :destroy]
+
   def home
   end
 
@@ -19,15 +20,15 @@ class PagesController < ApplicationController
   end
 
 
-    # GET /pages
+  # GET /pages
   def index
     @pages = policy_scope Page.all.page(params[:page])
 
     respond_to do |format|
       format.html
-      format.csv {         send_data( @pages.to_csv,
-          filename: "CO2_datapoints_#{Time.zone.now}.csv", 
-          disposition: 'inline', type: "multipart/related")
+      format.csv { send_data(@pages.to_csv,
+                             filename: "CO2_datapoints_#{Time.zone.now}.csv",
+                             disposition: 'inline', type: "multipart/related")
       }
     end
   end
@@ -51,9 +52,9 @@ class PagesController < ApplicationController
   # POST /pages.json
   def create
 
-     #Can also be created with:
-     # => curl -X POST -H "Content-Type: application/json; charset=UTF-8" -d '{"page": {"ppm": "400","device_id": "1"}}' localhost:3000/pages.json
-     # => curl -X POST -H "Content-Type: application/json; charset=UTF-8" -d '{"page": {"ppm": "400", "device_address": "42"}}' localhost:3000/pages.json
+    #Can also be created with:
+    # => curl -X POST -H "Content-Type: application/json; charset=UTF-8" -d '{"page": {"ppm": "400","device_id": "1"}}' localhost:3000/pages.json
+    # => curl -X POST -H "Content-Type: application/json; charset=UTF-8" -d '{"page": {"ppm": "400", "device_address": "42"}}' localhost:3000/pages.json
 
     @page = Page.new(page_params)
     authorize @page
@@ -94,17 +95,17 @@ class PagesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_page
-      if(params.has_key? :id)
-        @page = Page.find(params[:id])
-      end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_page
+    if (params.has_key? :id)
+      @page = Page.find(params[:id])
     end
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def page_params
-      params.require(:page).permit(:title, :long_title, :content)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def page_params
+    params.require(:page).permit(:title, :long_title, :content)
+  end
 
 
 end

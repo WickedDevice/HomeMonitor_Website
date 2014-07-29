@@ -7,7 +7,7 @@ else
 	ul_class = "nav navbar-collapse collapse navbar-right navbar-nav navbar-custom"
 end %>
 
-<header class="navbar navbar-fixed-top navbar-custom">
+<header id="navbar" class="navbar navbar-fixed-top navbar-custom">
 	<div class="navbar-inner">
 		<div class="container">
 			<div class="navbar-header">
@@ -39,8 +39,9 @@ end %>
 					<li><%= link_to "FAQ", controller: :pages, :action => :faq %></li>
 					<li><%= link_to "Buy", controller: :pages, :action => :buy %></li>
 					<% unless current_user.nil? %>
-					<li><%= link_to "Sensors", devices_path %></li>
-					<li><%= link_to "Experiments", experiments_path %></li>
+					<li><%= link_to "Devices", devices_path %></li>
+					<li><%= link_to "Sensors", sensors_path %></li>
+					<li><%= link_to "Buildings", buildings_path %></li>
 					<% end %>
 					<li class="divider-vertical"></li>
 					<li><%= user_button %>

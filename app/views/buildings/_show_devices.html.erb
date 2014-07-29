@@ -1,0 +1,23 @@
+<% if not @building.device_buildings.first.nil? %>
+<%# If there is any devices attached to the building %>
+<p>
+  <table class="table">
+<thead><tr>
+  <th><strong>Devices</strong></th> <th></th> <th><%= render "application/tooltip", visible: "Device Location", tooltip: "Where the device is in the building."%> </th><tr>
+</thead>
+<tbody>
+	<% @building.device_buildings.each do |de| %>
+		<tr><td><%= link_to de.device.name, de.device %>
+        </td>
+        <td><%= render 'form_device', device: de.device, building_id: @building.id if @building.active? %></td>
+        <td> <%= de.location %> </td>
+    </tr>
+	<% end %>
+</tbody>
+</table>
+<%= render 'form_all_devices' if @building.active? %>
+
+</p>
+<% else %>
+<p><br>This building doesn't appear to have any devices.</p>
+<% end %>

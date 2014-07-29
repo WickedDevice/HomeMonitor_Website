@@ -65,16 +65,16 @@ class UsersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
-      @experiments = policy_scope Experiment.where(user_id: @user.id)
-      @devices = policy_scope Device.where(user_id: @user.id)
-      authorize @user
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_user
+    @user = User.find(params[:id])
+    @buildings = policy_scope Building.where(user_id: @user.id)
+    @devices = policy_scope Device.where(user_id: @user.id)
+    authorize @user
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def user_params
-      params[:user].permit(:name, :password, :password_confirmation, :admin)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def user_params
+    params[:user].permit(:name, :password, :password_confirmation, :admin)
+  end
 end

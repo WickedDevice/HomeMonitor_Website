@@ -5,11 +5,11 @@
   <%= @device.name %>
 </p>
 
-<% if @device.in_experiment? %>
+<% if @device.in_building? %>
   <p></p>
-	<strong>Current Experiment:</strong>
-	<%= link_to @device.experiment.name, @device.experiment %>
-  (<%= render "form_remove_from_experiment" %>)
+	<strong>Current Building:</strong>
+	<%= link_to @device.building.name, @device.building %>
+  (<%= render "form_remove_from_building" %>)
   <p></p>
 <% end %>
 
@@ -25,12 +25,12 @@
 </div>
 
 <p>
-  <strong>Past experiments:</strong>
+  <strong>Past buildings:</strong>
   <ul>
-  <% policy_scope(@device.device_experiments).order(created_at: :desc).each do |de| %>
-    <% if de.experiment %>
+  <% policy_scope(@device.device_buildings).order(created_at: :desc).each do |de| %>
+    <% if de.building %>
     <li>
-      <%= link_to de.experiment.name, de.experiment %> (<%= de.location.nil? ? "No location" : de.location %>)
+      <%= link_to de.building.name, de.building %> (<%= de.location.nil? ? "No location" : de.location %>)
     </li>
     <%end %>
   <% end %>

@@ -1,0 +1,115 @@
+<%# Expects local variable back_links to be defined %>
+<%# This script probably shouldn't be here... %>
+<script type="text/javascript">
+var check_box_change = function(device_id) {
+  var check_box = document.querySelector("input[type='checkbox'][value='"+ device_id + "']");
+  var location = document.querySelector("#location_for_device_" + device_id);
+
+  if(check_box.checked && location != null) {
+     location.style['visibility'] = 'visible';
+  } else {
+    location.style['visibility'] = 'hidden';
+  }
+}
+</script>
+
+<%= form_for(@building , html: {:class => "centered"}) do |f| %>
+  <% if @building.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@building.errors.count, "error") %> prohibited this building from being saved:</h2>
+
+      <ul>
+      <% @building.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= render "application/tooltip", tooltip: "The location of the building.", visible: f.label(:location, "Building Location") %><br>
+    <%= f.text_field :location %>
+  </div>
+
+
+<% if not @building.start.nil? %>
+  <div class="field">
+    <%= f.label :start %><br>
+    <%= f.datetime_select :start, ampm: true%>
+  </div>
+<% end %>
+
+<% if not @building.end.nil? %>
+  <div class="field">
+    <%= f.label :end %><br>
+    <%= f.datetime_select :end, ampm: true %>
+  </div>
+<% end %>
+
+  <div class="field">
+    <%= f.label :details %><br>
+    <%= f.text_area :details%>
+  </div>
+
+<div>
+  <br>
+  <% if @devices %>
+  <table class="table">
+    <thead>
+      <th><%= f.label :devices, "Device" %><th></th></th><th><%= render "application/tooltip", visible: "Device Location", tooltip: "Where the device is in the building."%></th>
+    </thead>
+    <tbody>
+      <% @devices.each do |device| %>
+      <tr>
+        <td>
+      <%= fields_for(device) do |device_f| %>
+      <% checked = @building.devices.include?(device) %>
+      <%= device_f.label device.name %>
+        </td>
+        <td>
+          <%= check_box_tag("building[device_ids][]", device.id, checked, onchange: "check_box_change(#{device.id.to_s})", disabled: checked) %>
+        </td>
+          <% de = DeviceBuilding.find_by(building_id: @building.id, device_id: device.id) %>
+
+          <% if !de.nil? %>
+            <td>
+            <%= fields_for(de) do |de_f| %>
+              <%= text_field_tag("building[device_buildings_locs][#{de.id}]", de.location )%>
+            <% end %>
+            </td>
+          <% else %>
+            <% display_location = checked ? "visible" : "hidden" %>
+            <td style='visibility:<%= display_location %>', id='<%= 'location_for_device_' + device.id.to_s %>'>
+              <%= text_field_tag("building[device_buildings_locs][new][#{device.id}]", "", { placeholder: "Add a location"}) %>
+            </td>
+          <% end %>
+
+
+      <% end %>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <% else %>
+  <p>There appear to be no devices available.</p>
+  <% end %>
+</div>
+
+<div>
+  <table class = "table">
+    <thead>
+      <th> <%= f.label :Sensor %> </th>
+      <th><strong> Sensor ID </strong></th>
+    </thead>
+  </table>
+</div>
+
+  <div class="actions">
+    <%= back_links %>
+    <%= f.submit %>
+  </div>
+<% end %>

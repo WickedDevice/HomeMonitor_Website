@@ -1,0 +1,50 @@
+<% provide :title, "Building View" %>
+
+<p>
+  Download:
+  <%= link_to "CSV", :action => :show, :id => @building.id, :format =>'csv'%>
+
+</p>
+
+ <% if @building.sensor_data.empty? %>
+ <br>
+ <p>This building has no data yet.
+
+ <% if @building.active? %>
+ <%# Not printing anything %>
+ <% elsif @building.start.nil? %>
+ Press Start building to begin collecting data.
+ <% elsif !@building.end.nil?%> <%#should be true %>
+ <br>
+ Reopen building or wait for data to upload from already active sensors to add data.
+ <% end %>
+ </p>
+ <% else %>
+  <%= render 'chart' %>
+ <% end %>
+
+<br>
+<p>
+	<strong>Name:</strong>
+	<%= @building.name %>
+</p>
+
+<p>
+	<%= render "application/tooltip", tooltip: "The building and room where the building takes place.", visible: "<strong>Building Location:</strong>" %>
+  <%= @building.location %>
+</p>
+
+
+<%= render 'show_start_and_end' %>
+
+<div>
+<strong>Details:</strong>
+<pre><%= @building.details %></pre>
+<br>
+</div>
+
+<%= render 'show_devices' %>
+<%= render 'show_sensors' %>
+<br>
+<%= link_to 'Back', buildings_path %> | 
+<%= link_to 'Edit', edit_building_path(@building) %>

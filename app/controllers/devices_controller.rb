@@ -32,7 +32,7 @@ class DevicesController < ApplicationController
     @device = Device.new(device_params)
     authorize @device
 
-    match = Device.find_by( address: @device.address)
+    match = Device.find_by(address: @device.address)
     if match && User.find(match.user_id).admin?
       #Take the device from the admin and give it to the user.
       @device = match
@@ -92,19 +92,19 @@ class DevicesController < ApplicationController
     #Don't authorize
 
     respond_to do |format|
-      format.html {render(layout: false)}
+      format.html { render(layout: false) }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_device
-      @device = Device.find(params[:id])
-      authorize @device
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_device
+    @device = Device.find(params[:id])
+    authorize @device
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def device_params
-      params.require(:device).permit(:name, :address, :notes, :experiment_id, :encryption_key).merge(user_id: current_user.id)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def device_params
+    params.require(:device).permit(:name, :address, :notes, :building_id, :encryption_key).merge(user_id: current_user.id)
+  end
 end

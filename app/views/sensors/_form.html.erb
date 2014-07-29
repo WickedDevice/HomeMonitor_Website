@@ -1,0 +1,40 @@
+<%= form_for(@sensor  , html: {:class => "centered"}) do |f| %>
+  <% if @sensor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@sensor.errors.count, "error") %> prohibited this sensor from being saved:</h2>
+
+      <ul>
+      <% @sensor.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field">
+    <%= f.label :Name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :Sensor_ID, "Sensor ID" %><br>
+    <%= text_field_tag :sensor_id %>
+  </div>
+  <div class="field">
+    <%=f.label :Channel %><br>
+    <%= text_field_tag :channel %>
+  </div>
+  <div class="field">
+    <%= f.label :Sensor_type, "Sensor Type" %>
+    <%= f.select(:sensor_type, ["Temp", "Humidity", "Rain", "UV"]) %>
+  </div>
+  <div>
+    <%= f.label :Min, "Minimum Value" %>
+    <%= f.number_field(:min_val, in: 0..1000, step: 5) %>
+  </div>
+  <div>
+    <%= f.label :Min, "Maximum Value" %>
+    <%= f.number_field(:max_val, in: 0..1000, step: 5) %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

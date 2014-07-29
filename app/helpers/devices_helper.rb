@@ -5,13 +5,13 @@ module DevicesHelper
 
 		if @device.nil?
         	string << "<p>Device not found</p>"
-		elsif @device.in_experiment?
-			string << "In_experiment: "
-			string << device.experiment_id.to_s + " "
-			string << "CO2_cutoff: "
-			string << device.experiment.co2_cutoff.to_s + " "
+		elsif @device.in_building?
+			string << "In_Building: "
+			string << device.building_id.to_s + " "
+			#string << "CO2_cutoff: "
+			#string << device.building.co2_cutoff.to_s + " "
 		else
-			string << "Device is not in an experiment. "
+			string << -1.to_s
 		end
 		return string
 	end

@@ -1,0 +1,36 @@
+<% provide :title, "Sensor View" %>
+
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Sensor:</strong>
+  <%= @sensor.name %>
+</p>
+<p>
+  <strong>Sensor ID:</strong>
+  <%= @sensor.sensor_id %>
+</p>
+<p>
+  <strong>Channel:</strong>
+  <%= @sensor.channel %>
+</p>
+<p>
+	<strong>Type:</strong>
+	<%= @sensor.sensor_type %>
+</p>
+<p>
+	<strong>Min:</strong>
+	<%= @sensor.min_val %>
+</p>
+<p>
+	<strong>Max:</strong>
+	<%= @sensor.max_val %>
+</p>
+<p>
+  <strong>Building:</strong>
+  <%= link_to @sensor.building.name, @sensor.building if @sensor.building %>
+</p>
+
+<%= link_to 'Edit', edit_sensor_path(@sensor) %> |
+<%= link_to 'Back', sensors_path %>

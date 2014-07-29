@@ -1,21 +1,21 @@
 <div>
-	<h3>Sensors:</h3>
+	<h3>Devices:</h3>
 	<table class="table">
 		<thead>
 			<th>Name</th>
-			<th>Current Experiment</th>
+			<th>Current building</th>
 		</thead>
 		<tbody>
 	<% @devices.each do |device| %>
 		<tr><td><%= link_to device.name, device %></td>
 			<td>
-			<%= device.in_experiment? ? link_to(device.experiment.name, device.experiment) : "None" %></td>
+			<%= device.in_building? ? link_to(device.building.name, device.building) : "None" %></td>
 		</tr>
 	<% end %>
 	</tbody></table>
 
 		<div class="center" style="margin-top:1em;">
-			<%= link_to "View sensors", devices_path %>
+			<%= link_to "View Devices", devices_path %>
 		</div>
 
 </div>

@@ -1,0 +1,20 @@
+<%= form_for(@device, html: { style: "display:inline-block" }) do |f| %>
+  <% if @device.errors.any? %>
+    <div id="error_explanation" style="display">
+      <h2><%= pluralize(device.errors.count, "error") %> prohibited this device from being saved:</h2>
+
+      <ul>
+      <% @device.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.hidden_field :redirect_to, :value => device_path(@device) %>
+  <%= f.hidden_field :building_id, :value => nil %>
+
+  <div class="actions" style="float:left; margin:0;">
+    <%= f.submit "Remove"%>
+  </div>
+<% end %>

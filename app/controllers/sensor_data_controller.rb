@@ -15,9 +15,9 @@ class SensorDataController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.csv {         send_data( @sensor_data.to_csv,
-          filename: "CO2_datapoints_#{Time.zone.now}.csv", 
-          disposition: 'inline', type: "multipart/related")
+      format.csv { send_data(@sensor_data.to_csv,
+                             filename: "CO2_datapoints_#{Time.zone.now}.csv",
+                             disposition: 'inline', type: "multipart/related")
       }
     end
   end
@@ -41,15 +41,15 @@ class SensorDataController < ApplicationController
   # POST /sensor_data.json
   def create
 
-     #Can also be created with:
-     # => curl -X POST -H "Content-Type: application/json; charset=UTF-8" -d '{"sensor_datum": {"ppm": "400","device_id": "1"}}' localhost:3000/sensor_data.json
-     # => curl -X POST -H "Content-Type: application/json; charset=UTF-8" -d '{"sensor_datum": {"ppm": "400", "device_address": "42"}}' localhost:3000/sensor_data.json
+    #Can also be created with:
+    # => curl -X POST -H "Content-Type: application/json; charset=UTF-8" -d '{"sensor_datum": {"ppm": "400","device_id": "1"}}' localhost:3000/sensor_data.json
+    # => curl -X POST -H "Content-Type: application/json; charset=UTF-8" -d '{"sensor_datum": {"ppm": "400", "device_address": "42"}}' localhost:3000/sensor_data.json
 
     @sensor_datum = SensorDatum.new(sensor_datum_params)
     authorize @sensor_datum
 
     @sensor_datum.resolve_device_id
-    @sensor_datum.resolve_experiment_id
+    @sensor_datum.resolve_building_id
 
     respond_to do |format|
       if @sensor_datum.save
@@ -75,12 +75,12 @@ class SensorDataController < ApplicationController
       render :batch_create, layout: false, formats: :html
       return
     end
-
-    @success &= SensorDatum.batch_create(new_params["sensor_datum"])
-
-    if(new_params["experiment_ended"] == "true")
-      device.checkin(new_params["sensor_datum"]["experiment_id"].to_i)
-    end
+    puts "Success decoding JSON: \t#{new_params}"
+    @success &= SensorDatum.batch_create(new_params)
+    
+    # if (new_params["building_ended"] == "true")
+    #   device.checkin(new_params["sensor_datum"]["building_id"].to_i)
+    # end
 
     render :batch_create, layout: false, formats: :html
   end
@@ -110,16 +110,16 @@ class SensorDataController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_sensor_datum
-      if(params.has_key? :id)
-        @sensor_datum = SensorDatum.find(params[:id])
-        authorize @sensor_datum
-      end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_sensor_datum
+    if (params.has_key? :id)
+      @sensor_datum = SensorDatum.find(params[:id])
+      authorize @sensor_datum
     end
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def sensor_datum_params
-      params.require(:sensor_datum).permit(:ppm, :device_id, :experiment_id, :device_address)#, :sensor_datum => [:ppm => []])
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def sensor_datum_params
+    params.require(:sensor_datum).permit(:title, :data, :device_id, :building_id, :device_address) #, :sensor_datum => [:ppm => []])
+  end
 end

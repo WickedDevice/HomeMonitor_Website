@@ -1,0 +1,41 @@
+<% provide :title, "Buildings" %>
+
+<p>
+  Download all:
+  <%= link_to "CSV", buildings_path(format: "csv") %>
+</p>
+<p>
+  An building is made up of one or more Device. Each building has a defined start and end which are used to control when the device in the building is active.
+</p>
+<%= paginate @buildings %>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Location</th>
+      <th>Start</th>
+      <th>End</th>
+      <th>Download</th>
+      <th colspan="3" class="options">Options</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @buildings.each do |building| %>
+      <tr>
+        <td><%= link_to building.name, building %></td>
+        <td><%= building.location %></td>
+        <td><%= building.start.to_s(:custom) unless building.start.nil? %></td>
+        <td><%= building.end.nil? ? "Not ended" : building.end.to_s(:custom) %></td>
+        <td><%= link_to "CSV", :action => :show, :id => building.id, :format =>'csv'%></td>
+        <td><%= link_to 'Show', building, data: { no_turbolink: true } %></td>
+        <td><%= link_to 'Edit', edit_building_path(building) %></td>
+        <td><%= link_to 'Destroy', building, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= paginate @buildings %>
+<br>
+
+<%= link_to 'New building', new_building_path %>

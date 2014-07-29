@@ -1,0 +1,23 @@
+<% if not @building.sensors.first.nil? %>
+<%# If there is any devices attached to the building %>
+<p>
+  <table class="table">
+<thead><tr>
+  <th><strong>Sensors</strong></th> <th><strong>Latest Value</strong></th> <th><strong>Time Updated</strong></th><tr>
+</thead>
+<tbody>
+	<% @building.sensors.each do |de| %>
+		<tr><td><%= link_to de.name, de %>
+        </td>
+        <td><%=  de.sensor_data.last.data if de.sensor_data.last %></td>
+        <td><%= de.sensor_data.last.created_at if de.sensor_data.last %></td>
+    </tr>
+	<% end %>
+</tbody>
+</table>
+
+
+</p>
+<% else %>
+<p><br>This building doesn't appear to have any sensors.</p>
+<% end %>

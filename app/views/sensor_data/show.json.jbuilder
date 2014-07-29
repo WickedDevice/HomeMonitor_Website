@@ -1,1 +1,1 @@
-json.extract! @sensor_datum, :id, :ppm, :created_at, :updated_at
+json.extract! @sensor_datum, :id, :title, :data, :created_at, :updated_at
