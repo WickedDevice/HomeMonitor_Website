@@ -8,12 +8,13 @@
 <table class="table">
   <thead>
     <tr>
+      <th>Sensor</th>
       <th>Sensor ID</th>
       <th>Data</th>
-      <th>Device id</th>
-      <th>Sensor ID</th>
-      <th>Building id</th>
-      <th>Time recorded</th>
+      <th>Unit</th>
+      <th>Device</th>
+      <th>Building</th>
+      <th>Time</th>
       <th colspan="3" class="options">Options</th>
     </tr>
   </thead>
@@ -21,11 +22,12 @@
   <tbody>
     <% @sensor_data.each do |sensor_datum| %>
       <tr>
+        <td><%= link_to sensor_datum.sensor.name, sensor_datum.sensor %></td>
         <td><%= sensor_datum.title%></td>
         <td><%= sensor_datum.data %></td>
-        <td><%= sensor_datum.device_id %></td>
-        <td><%= sensor_datum.sensor_id %></td>
-        <td><%= sensor_datum.building_id %></td>
+        <td><%= sensor_datum.sensor.unit %></td>
+        <td><%= link_to sensor_datum.device.name, sensor_datum.device %></td>
+        <td><%= link_to sensor_datum.building.name, sensor_datum.building %></td>
         <td><%= sensor_datum.created_at.in_time_zone.to_formatted_s(:custom) %></td>
         <td><%= link_to 'Show', sensor_datum %></td>
         <td><%= link_to 'Edit', edit_sensor_datum_path(sensor_datum) %></td>

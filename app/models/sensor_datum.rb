@@ -3,6 +3,7 @@ class SensorDatum < ActiveRecord::Base
 	validates :data, presence: true
 	belongs_to :device
 	belongs_to :building
+	belongs_to :sensor
 
 	@device_address = nil
 	attr_accessor :device_address
@@ -45,7 +46,8 @@ class SensorDatum < ActiveRecord::Base
 	end
 
 	def self.batch_create(params)
-		puts "Params #{params}"
+		time_sent = Time.now
+
 		if params.nil? #|| params["title"].nil?
 			return false
 		end
@@ -53,7 +55,7 @@ class SensorDatum < ActiveRecord::Base
 		success = true
 
 		device = Device.find_by address: params["device_address"]
-		complete_id = params["sensor_datum"]["DevID"]+params["sensor_datum"]["Channel"]
+		complete_id = params["sensor_datum"]["DevID"].reverse+params["sensor_datum"]["Channel"]
 		sensors = Sensor.all.where(device_id:complete_id, building_id:device.building_id)
 		
 		#Offline sensor mode
@@ -72,9 +74,13 @@ class SensorDatum < ActiveRecord::Base
 			sensor_datum.building_id = building_id
 			sensor_datum.device = device
 			sensor_datum.title = complete_id
-			sensor_datum.data = params["sensor_datum"][sensor.sensor_type].to_f / 10.0
+			sensor_datum.data = params["sensor_datum"][sensor.sensor_type].to_f
+			case sensor.sensor_type
+			when "Temp"
+				 sensor_datum.data = (((sensor_datum.data * 9) / 50.0) + 32).round(1)
+			end
 			sensor_datum.sensor_id = sensor.id
-			sensor_datum.created_at = Time.now
+			sensor_datum.created_at = time_sent
 
 			success &= sensor_datum.save
 		end

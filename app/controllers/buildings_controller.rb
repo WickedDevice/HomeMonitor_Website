@@ -104,7 +104,12 @@ class BuildingsController < ApplicationController
 
     #@building.request_only_devices(params[:building][:device_ids])
     @building.request_additional_devices(params[:building][:device_ids])
-
+    if params[:building][:sensor_ids]
+      Sensor.all.find(params[:building][:sensor_ids]).each do |sensor|
+        sensor.activate(@building.id)
+      end
+    end
+    puts "Params: #{params}"
     if params[:building][:start] == "now"
       if not @building.checkout_devices()
         success &= false
@@ -160,6 +165,7 @@ class BuildingsController < ApplicationController
     @building = Building.find(params[:id])
     authorize @building
     @devices = policy_scope Device.where(user_id: current_user.id)
+    @sensors = policy_scope Sensor.where(user_id: current_user.id, activated: false)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

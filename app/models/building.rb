@@ -69,6 +69,16 @@ class Building < ActiveRecord::Base
 		return true
 	end
 
+	def in_violation
+		violated = false
+		self.sensors.each do |sensor|
+			if sensor.in_violation
+				violated = true
+			end
+		end
+		return violated
+	end
+
 	def self.to_csv
 		csv = ""
 		all.each do |building|
@@ -79,7 +89,6 @@ class Building < ActiveRecord::Base
 
 	def to_csv
 		CSV.generate do |csv|
-
 			#setting up headings
 			csv << ["Building:",self.name, "Location:", self.location]
 			csv << ["Start:", self.start.nil? ? "Not started" : self.start.in_time_zone.to_s(:custom_csv),
@@ -88,25 +97,19 @@ class Building < ActiveRecord::Base
 			csv << ["Data"]
 
 			chart_data = BuildingsHelper.chart_data(self, max_points: nil)
-
-			#Column names
-			des = device_buildings.sort_by {|x| x.device_id}
-			csv << ["Time"] + des.map {|x| x.location == "" ? x.device.name : x.location}
-
+			csv << ["Time"] + (sensors.map {|x| x.name})
 			chart_data.each do |time, values|
-				row = [time.in_time_zone.to_formatted_s(:custom_csv)]
-				
-				values.sort_by! {|x| x.device_id}
-				device_buildings.each do |de|
-					if !values[0].nil? && values[0].device_id == de.device_id
-						row << values.shift.data
-					else
-						row << nil
-					end
+			row = [time.in_time_zone.to_formatted_s(:custom_csv)]
+			values.sort_by!{|x| x.sensor_id}
+			sensors.each do |sensor|
+				if !values[0].nil? && values[0].sensor_id == sensor.id
+					row << values.shift.data
+				else
+					row << nil
 				end
-
-				csv << row
 			end
+		csv << row
+	end	
 		end
 	end
 

@@ -1,17 +1,0 @@
-U:2ActiveRecord::ConnectionAdapters::SchemaCache[
-l+OxOTQ{I"schema_migrations:ET[o:4ActiveRecord::ConnectionAdapters::SQLite3Column:
-@nameI"version;T:@sql_typeI"varchar(255);T:
-@nullF:@limitiÿ:@precision0:@scale0:
-@type:string:@default0:@default_function0:@primary0:@coder0I"devices;T[o;;I"id;T;	I"INTEGER;T;
-F;0;0;0;:integer;0;0;0;0o;;I"	name;T;	I"varchar(255);T;
-T;iÿ;0;0;;;0;0;0;0o;;I"address;T;	I"varchar(255);T;
-T;iÿ;0;0;;;0;0;0;0o;;I"
-notes;T;	I"varchar(255);T;
-T;iÿ;0;0;;;0;0;0;0o;;I"created_at;T;	I"datetime;T;
-T;0;0;0;:datetime;0;0;0;0o;;I"updated_at;T;	I"datetime;T;
-T;0;0;0;;;0;0;0;0I"sensor_data;T[	o;;I"id;T;	I"INTEGER;T;
-F;0;0;0;;;0;0;0;0o;;I"ppm;T;	I"integer;T;
-T;0;0;0;;;0;0;0;0o;;I"created_at;T;	I"datetime;T;
-T;0;0;0;;;0;0;0;0o;;I"updated_at;T;	I"datetime;T;
-T;0;0;0;;;0;0;0;0{I"schema_migrations;T{I"version;T@I"devices;T{I"id;T@I"	name;T@I"address;T@I"
-notes;T@I"created_at;T@I"updated_at;T@I"sensor_data;T{	I"id;T@$I"ppm;T@'I"created_at;T@*I"updated_at;T@-{I"schema_migrations;T0I"devices;TI"id;TI"sensor_data;TI"id;T{I"schema_migrations;TTI"devices;TTI"sensor_data;TT

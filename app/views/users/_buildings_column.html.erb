@@ -1,70 +1,57 @@
-<div>
-	<h3>Recent buildings:</h3>
-	<table class="table">
-		<thead>
-			<tr>
-				<th>Name</th>
-				<th>Location</th>
-				<th colspan="2"></th>
-			</tr>
-		</thead>
-		<tbody>
-		<% @buildings.last(10).reverse.each do |building| %>
-			<tr>
-				<td> <%= link_to building.name, building %> </td>
-				<td>
-					<%= building.location %>
-				</td>
-				<td> <%= if building.active?
-							"Active"
-						elsif building.end.nil?
-							"Not begun"
-						else
-							"Finished"
-						end %>
-					</td>
-				<td><%= link_to "Download CSV", building_path(building, :format =>'csv')%></td>
-			</tr>
-		<% end %>
 
-	</tbody></table>
-		<div class="center" style="margin-top:1em;">
-			<%= link_to "View all buildings", buildings_path %> <br><br>
-			<%= link_to "Create new building", new_building_path %>
-		</div>
-</div>
 <div>
+	<h3>Active buildings:</h3>
 	<table class="table">
 
 	<tbody>
-		<% @buildings.each do |building| %>
+		<% @buildings.reverse.each do |building| %>
+		<%if building.active? %>
 		<tr>
-			<th><h3><%= link_to building.name, building %></h3></th>
-		</tr>
-		<tr>
+			<th><h4><%= link_to building.name, building %></h4></th>
 			<th>
-				<table class="table">
-					<thead>
-						<tr>
-							<th>Sensors</th>
-							<th>Type</th>
-							<th>Current Value</th>
-						</tr>
-					</thead>
-					<tbody>
-						<% building.sensors.each do |sensor| %>
-						<tr>
-							<th><%= link_to sensor.name, sensor %></th>
-							<th> <%= sensor.sensor_type %> </th>
-							<th><%= sensor.sensor_data.last.data.to_s + sensor.unit if sensor.sensor_data.last%></th>
-						</tr>
-						<% end %>
-					</tbody>	
-				</table>
+				<%if building.in_violation %>
+					<h4 style="color:red">Paramter Violation</h4>
+				<% end %>
 			</th>
 		</tr>
+		<tr>
+			<td colspan="2">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Sensor</th>
+						<th>Type</th>
+						<th>Value</th>
+						<th>Last Update</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% building.sensors.each do |sensor| %>
+					<tr>
+						<td><%= link_to sensor.name, sensor %></td>
+						<td> <%= sensor.sensor_type %> </td>
+						<%if sensor.sensor_data.last %>
+						<td <% if sensor.in_violation %> 
+								style = "color:red" 
+								<% else %>
+								style = "color:green"
+								<%end%>><%= sensor.sensor_data.last.data.to_s + sensor.unit%></td>
+						<td><%= sensor.sensor_data.last.created_at.to_s(:custom) %></td>
+						<% end %>
+					</tr>
+					<% end %>
+				</tbody>	
+			</table>
+			</td>
+		</tr>
+		<% end %>
 		<% end %>
 	</tbody>
 	</table>
 	
+</div>
+
+<div class="center">
+	<%= link_to "View all buildings", buildings_path %> <br><br>
+	<%= link_to "Create new building", new_building_path %>
 </div>

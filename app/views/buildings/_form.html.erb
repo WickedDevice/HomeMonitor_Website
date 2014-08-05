@@ -13,6 +13,13 @@ var check_box_change = function(device_id) {
 }
 </script>
 
+<script type="text/javascript">
+var sensor_check_box_change = function(sensor_id) {
+  var check_box = document.querySelector("input[type='checkbox'][value='"+ device_id + "']");
+  var location = document.querySelector("#location_for_sensor_" + sensor_id);
+}
+</script>
+
 <%= form_for(@building , html: {:class => "centered"}) do |f| %>
   <% if @building.errors.any? %>
     <div id="error_explanation">
@@ -56,6 +63,45 @@ var check_box_change = function(device_id) {
   </div>
 
 <div>
+  <% if @sensors %>
+  <table class="table">
+    <thead>
+    <tr>
+      <th> Sensor </th>
+      <th></th>
+      <th> Sensor ID </th>
+      <th> Channel </th>
+      <th> Location </th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @sensors.each do |sensor| %>
+    <tr>
+    
+      <td>
+        <%= fields_for(sensor) do |sensor_f| %>
+      <% checked = @building.sensors.include?(sensor) %>
+      <%= sensor_f.label sensor.name %>
+      </td>
+      <td>
+        <%= check_box_tag("building[sensor_ids][]", sensor.id, checked, onchange: "sensor_check_box_change(#{sensor.id.to_s})", disabled: checked) %>
+      </td>
+      <td> <%= sensor.sensor_id %></td>
+      <td> <%= sensor.channel %></td>
+      <td> todo </td>
+      <% end %>
+    
+    </tr>
+    <% end %>
+    </tbody>
+  </table>
+  <% else %>
+    <p> There Are no Sensors.</p>
+    <p>Try <%= link_to "Create Sensor", new_sensor_path %></p>
+  <% end %>
+</div>
+
+<div>
   <br>
   <% if @devices %>
   <table class="table">
@@ -97,15 +143,6 @@ var check_box_change = function(device_id) {
   <% else %>
   <p>There appear to be no devices available.</p>
   <% end %>
-</div>
-
-<div>
-  <table class = "table">
-    <thead>
-      <th> <%= f.label :Sensor %> </th>
-      <th><strong> Sensor ID </strong></th>
-    </thead>
-  </table>
 </div>
 
   <div class="actions">

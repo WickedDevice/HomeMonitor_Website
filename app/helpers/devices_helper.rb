@@ -8,12 +8,14 @@ module DevicesHelper
 		elsif @device.in_building?
 			string << "In_Building: "
 			string << device.building_id.to_s + " "
-			#string << "CO2_cutoff: "
-			#string << device.building.co2_cutoff.to_s + " "
+
 		else
 			string << -1.to_s
 		end
 		return string
+	end
+
+	def get_sensors_string
 	end
 
 end

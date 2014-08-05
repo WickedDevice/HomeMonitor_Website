@@ -28,11 +28,11 @@
   </div>
   <div>
     <%= f.label :Min, "Minimum Value" %>
-    <%= f.number_field(:min_val, in: 0..1000, step: 5) %>
+    <%= f.number_field(:min_val, in: 0..1000, step: 1) %>
   </div>
   <div>
     <%= f.label :Min, "Maximum Value" %>
-    <%= f.number_field(:max_val, in: 0..1000, step: 5) %>
+    <%= f.number_field(:max_val, in: 0..1000, step: 1) %>
   </div>
   <div class="actions">
     <%= f.submit %>

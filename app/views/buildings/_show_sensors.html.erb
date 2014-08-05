@@ -10,7 +10,7 @@
 		<tr><td><%= link_to de.name, de %>
         </td>
         <td><%=  de.sensor_data.last.data if de.sensor_data.last %></td>
-        <td><%= de.sensor_data.last.created_at if de.sensor_data.last %></td>
+        <td><%= de.sensor_data.last.created_at.to_s(:custom) if de.sensor_data.last %></td>
     </tr>
 	<% end %>
 </tbody>

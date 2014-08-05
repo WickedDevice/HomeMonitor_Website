@@ -2,7 +2,7 @@
 <%=
 CSV.generate do |csv|
 	csv << ["Time"] + (@sensors.map {|x| x.name})
-	chart_data(@building, max_points: 500).each do |time, values|
+	chart_data(@building, max_points: 10000).each do |time, values|
 		row = [time.in_time_zone.to_formatted_s(:custom_csv)]
 		values.sort_by!{|x| x.sensor_id}
 		@sensors.each do |sensor|

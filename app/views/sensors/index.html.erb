@@ -5,6 +5,7 @@
   <thead>
     <tr>
       <th>Name</th>
+      <th>Type</th>
       <th>Device ID</th>
       <th>Channel</th>
       <th>Current Building</th>
@@ -16,6 +17,7 @@
     <% @sensors.each do |sensor| %>
       <tr>
         <td><%=link_to sensor.name, sensor%></td>
+        <td> <%= sensor.sensor_type %> </td>
         <td><%= sensor.sensor_id %></td>
         <td><%=sensor.channel%></td>
         <td><%= link_to sensor.building.name, sensor.building if sensor.building %></td>
